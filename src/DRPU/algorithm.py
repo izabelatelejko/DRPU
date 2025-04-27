@@ -107,7 +107,6 @@ def ERM(
                 else:
                     thresh = given_thresholds[i]
                 acc, auc = prediction(model, testloader, device, thresh)
-                print("acc : ", acc)
                 test_results[i].append("accuracy", acc)
                 test_results[i].append("auc", auc)
 
@@ -140,9 +139,6 @@ def estimate_train_prior(model, valloader_P, valloader_U, device):
         train_prior = priorestimator(
             np.concatenate([preds_P, preds_U]), PUsequence(len(preds_P), len(preds_U))
         )
-    # print("********************")
-    # print("Train prior : {:.4f}".format(train_prior))
-    # print("********************")
     return train_prior, preds_P
 
 
@@ -160,8 +156,6 @@ def estimate_test_prior(model, testloader, preds_P, device):
         test_prior = priorestimator(
             np.concatenate([preds_P, preds_U]), PUsequence(len(preds_P), len(preds_U))
         )
-    # print("********************")
-    # print("Test prior : {:.4f}".format(test_prior))
     return test_prior
 
 
@@ -178,10 +172,6 @@ def prediction(model, testloader, device, thresh=0):
             targets.append(to_ndarray(t))
         preds_U = np.concatenate(preds_U)
         targets = np.concatenate(targets)
-        # print("preds_U : ", preds_U)
-        # print("targets : ", targets)
-        # print("thresh : ", thresh)
-        # 1 / 0
         acc = accuracy(preds_U - thresh, targets)
         auc = auroc(preds_U, targets)
     return acc, auc

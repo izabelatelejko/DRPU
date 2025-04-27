@@ -6,3 +6,6 @@
 /appendix.py
 /script.sh
 *.egg-info/
+*.bin
+*.pyc
+/build/lib/*
